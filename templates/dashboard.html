@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarmlessAI Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #101827;
+            color: #e5e7eb;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            color: #38bdf8;
+        }
+
+        button {
+            background: #0284c7;
+            color: white;
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #0369a1;
+        }
+
+        section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            text-align: left;
+            overflow-wrap: anywhere;
+        }
+
+        th {
+            color: #38bdf8;
+        }
+
+        .empty {
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>HarmlessAI</h1>
+            <p>Remote Activity Dashboard</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit">Sign Out</button>
+        </form>
+    </header>
+
+    <section>
+        <h2>Recent Remote Activity</h2>
+
+        {% if activities %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Device</th>
+                    <th>Action</th>
+                    <th>Item Type</th>
+                    <th>Path</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in activities %}
+                <tr>
+                    <td>{{ item.device_name }}</td>
+                    <td>{{ item.action }}</td>
+                    <td>{{ item.item_type }}</td>
+                    <td>{{ item.path }}</td>
+                    <td>{{ item.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No remote activity has been received yet.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Enrolled Devices</h2>
+
+        {% if devices %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Device Name</th>
+                    <th>Device ID</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for device in devices %}
+                <tr>
+                    <td>{{ device.device_name }}</td>
+                    <td>{{ device.device_id }}</td>
+                    <td>
+                        {{ "Active" if device.active else "Revoked" }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No devices enrolled yet.</p>
+        {% endif %}
+    </section>
+</body>
+</html>
