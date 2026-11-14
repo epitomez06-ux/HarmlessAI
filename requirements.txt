@@ -1,0 +1,7 @@
+rich
+watchdog
+python-dotenv
+litellm
+Flask
+gunicorn
+psycopg2-binary

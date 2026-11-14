@@ -1,0 +1,9 @@
+
+.env
+__pycache__/
+*.py[cod]
+data/*.db
+logs/*
+.venv/
+
+fix_password.py
